@@ -17,7 +17,7 @@ jobs:
       with:
         python-version: '3.11.1' 
     - name: test 
-      run: py_compile 
+      run: py_compile(APPCRM.py)
     
 
 
