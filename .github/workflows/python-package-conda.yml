@@ -10,7 +10,9 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.11.1' 
+    - run: python APPCRM.py
 
-    - name: Set up JDK 17
-      run: echo hello riad
