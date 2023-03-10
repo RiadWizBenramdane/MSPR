@@ -65,3 +65,4 @@ async def delete_product(product_id: int):
     # Delete the product from the ERP
     await delete_data_from_erp(f"/products/{product_id}")
     return {"id": product_id}
+ 
