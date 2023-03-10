@@ -15,9 +15,11 @@ jobs:
     - name: Setup
       uses: actions/setup-python@v4
       with:
-        python-version: '3.11.1' 
-    - name: test 
-      run: py_compile(APPCRM.py)
+        python-version: '3.11.1'
+    - name: Install dependencies
+      run: pip install -r packages.yaml
+    - name: Run tests
+      run: python -m unittest discover tests
     
 
 
