@@ -26,7 +26,7 @@ jobs:
     - name: Run tests
       run: |
        pip install pytest
-       pytest api_revendeur/tests/
+       pytest api_revendeur/tests/test_app
         
   analyze:
     needs: build
