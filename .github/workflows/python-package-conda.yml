@@ -19,7 +19,7 @@ jobs:
     - name: Install dependencies
       run: pip install -r api_revendeur/packages.yaml
     - name: Run tests
-      run: python -m unittest discover api_revendeur/tests
+      run: python -m pytest discover api_revendeur/tests
         
   analyze:
     needs: build
