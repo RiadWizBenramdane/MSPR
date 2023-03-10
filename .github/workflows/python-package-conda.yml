@@ -2,7 +2,7 @@ name: ci cd nnn
 
 on:
   push:
-    branches: ["main"]
+    branches: ["RiadWizBenramdane-patch-1"]
 
 jobs:
   build:
