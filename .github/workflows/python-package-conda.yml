@@ -20,12 +20,13 @@ jobs:
       with:
         python-version: '3.11.1'
     - name: Install dependencies
-      run:
+      run: |
        python -m pip install --upgrade pip
        pip install -r api_revendeur/packages.yaml
     - name: Run tests
-      run: pip install pytest
-       python pytest 
+      run: |
+       pip install pytest
+       pytest 
         
   analyze:
     needs: build
