@@ -105,4 +105,4 @@ async def delete_customer(customer_id: int, auth_token: str = Header(None)):
     # Delete the customer from the CRM
     await delete_data_from_crm(f"/customers/{customer_id}")
     return {"id": customer_id}
-
+ 
