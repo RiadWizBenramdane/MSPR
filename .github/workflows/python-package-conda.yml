@@ -21,6 +21,22 @@ jobs:
     - name: Run tests
       run: python -m unittest discover api_revendeur/tests
         
-    
+  analyze:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Set up Sonarqube
+      uses: sonarsource/setup-sonarqube@v1
+      with:
+        url: ${{ env.SONAR_URL }}
+        token: ${{ secrets.SONAR_LOGIN }}
+    - name: Analyze code
+      run: |
+        sonar-scanner 
+          -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }}
+          -Dsonar.sources=.
+          -Dsonar.host.url=${{ env.SONAR_URL }}
 
 
