@@ -22,7 +22,7 @@ jobs:
        pip install -r api_revendeur/packages.yaml
     - name: Run tests
       run: pip install pytest
-       python -m pytest discover api_revendeur/tests
+       python pytest discover api_revendeur/tests
         
   analyze:
     needs: build
