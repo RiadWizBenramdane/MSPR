@@ -11,7 +11,7 @@ def test_create_products():
         "stock": "10253",
     }
     response = client.post("/customers/", json=new_products)
-    test_id=response.json().id 
+    test_id=response.json()["id"]
     print(test_id)
     assert (response.status_code == 200) or (response.status_code == 201)
     assert response.json().name == "Jane Doe"
