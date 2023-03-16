@@ -20,7 +20,7 @@ def test_create_products():
     assert response.json().name == "Jane Doe"
     assert response.json().stock == "10253"
  
-    
+     
 # Test GET customer by ID
 # def test_read_customer():
 #     response = client.get("/customers/1")
