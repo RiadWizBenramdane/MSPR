@@ -11,6 +11,7 @@ def test_create_products():
     new_products = {
         "name": "Jane Doe",
         "stock": "10253",
+        "id": "5000",
     }
     response = client.post("/customers/", json=new_products)
     #test_id=response.json()["id"]
