@@ -4,22 +4,18 @@ from app import app
 
 client = TestClient(app)
 
-test_id=0
-# Test POST customer
-def test_create_customer():
-    new_customer = {
+
+def test_create_products():
+    new_products = {
         "name": "Jane Doe",
-        "firstname": "Jane",
-        "lastname": "Doe",
-        "email": "jane.smith@example.com",
+        "stock": "10253",
+        "id": "5000",
     }
-    response = client.post("/customers/", json=new_customer)
-    test_id=response.json().id 
+    response = client.post("/customers/", json=new_products)  
     assert (response.status_code == 200) or (response.status_code == 201)
     assert response.json().name == "Jane Doe"
-    assert response.json().email == "jane.smith@example.com"
-    assert response.json().firstname == "Jane"
-    assert response.json().lastname == "Doe"
+    assert response.json().stock == "10253"
+
     
 # Test GET customer by ID
 # def test_read_customer():
