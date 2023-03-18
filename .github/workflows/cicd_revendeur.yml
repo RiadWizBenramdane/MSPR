@@ -26,4 +26,4 @@ jobs:
     - name: Run tests
       run: |
        pip install pytest
-       pytest api_webshop/test_app_revendeur.py
+       pytest api_revendeur/test_app_revendeur.py
