@@ -1,6 +1,6 @@
 import unittest
 from fastapi.testclient import TestClient
-from main import app
+from APPCRM import app
 
 class TestApp(unittest.TestCase):
     def setUp(self):
