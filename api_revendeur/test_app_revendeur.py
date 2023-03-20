@@ -26,7 +26,7 @@ def test_create_product():
             },
             "stock": 12059,    
     }   
-     response = client.post("/products/", json.dumps(product))
+     response = client.post("/products/")
      id_test = response.json().id
      assert response.status_code == 200
      
