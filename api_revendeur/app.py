@@ -1,67 +1,47 @@
-from fastapi import FastAPI, HTTPException
-from typing import List
-import requests
+import json
+import pytest
+from fastapi.testclient import TestClient
 
-app = FastAPI()
+from main import app
 
-# Define the endpoint of the ERP's API
-erp_endpoint = "https://615f5fb4f7254d0017068109.mockapi.io/api/v1"
+client = TestClient(app)
 
-# Function for sending GET requests to the ERP's API
-async def get_data_from_erp(path: str):
-    url = erp_endpoint + path
-    response = requests.get(url)
-    if response.status_code != 200:
-        raise HTTPException(status_code=response.status_code, detail=response.text)
-    return response.json()
+# Test GET /products/{product_id}
+def test_read_product():
+    # Make a request to the endpoint with product_id=1
+    response = client.get("/products/1")
+    # Assert that the response status code is 200 OK
+    assert response.status_code == 200
+    # Assert that the response contains a "name" field
+    assert "name" in response.json()
 
-# Function for sending POST requests to the ERP's API
-async def post_data_to_erp(path: str, data: dict):
-    url = erp_endpoint + path
-    response = requests.post(url, json=data)
-    if response.status_code != 201:
-        raise HTTPException(status_code=response.status_code, detail=response.text)
-    return response.json()
+# Test POST /products/
+def test_create_product():
+    # Define the data to send in the request
+    product_data = {"name": "Test Product", "description": "This is a test product."}
+    # Make a request to the endpoint with the product data
+    response = client.post("/products/", json=product_data)
+    # Assert that the response status code is 200 OK
+    assert response.status_code == 200
+    # Assert that the response contains an "id" field
+    assert "id" in response.json()
 
-# Function for sending PUT requests to the ERP's API
-async def put_data_to_erp(path: str, data: dict):
-    url = erp_endpoint + path
-    response = requests.put(url, json=data)
-    if response.status_code != 200:
-        raise HTTPException(status_code=response.status_code, detail=response.text)
-    return response.json()
+# Test PUT /products/{product_id}
+def test_update_product():
+    # Define the data to send in the request
+    product_data = {"name": "Updated Product Name", "description": "This product has been updated."}
+    # Make a request to the endpoint with product_id=1 and the updated data
+    response = client.put("/products/1", json=product_data)
+    # Assert that the response status code is 200 OK
+    assert response.status_code == 200
+    # Assert that the response contains an "id" field
+    assert "id" in response.json()
 
-# Function for sending DELETE requests to the ERP's API
-async def delete_data_from_erp(path: str):
-    url = erp_endpoint + path
-    response = requests.delete(url)
-    if response.status_code != 204:
-            raise HTTPException(status_code=response.status_code, detail=response.text)
-    return response.json()
-
-# Define the routes for the API
-@app.get("/products/{product_id}")
-async def read_product(product_id: int):
-    # Retrieve the product from the ERP
-    product = await get_data_from_erp(f"/products/{product_id}")
-    if product is None:
-        raise HTTPException(status_code=404, detail="Product not found")
-    return product
-
-@app.post("/products/")
-async def create_product(product: dict):
-    # Create a new product in the ERP
-    new_product = await post_data_to_erp("/products/", product)
-    return {"id": new_product["id"]}
-
-@app.put("/products/{product_id}")
-async def update_product(product_id: int, product: dict):
-    # Update the product in the ERP
-    updated_product = await put_data_to_erp(f"/products/{product_id}", product)
-    return {"id": updated_product["id"]}
-
-@app.delete("/products/{product_id}")
-async def delete_product(product_id: int):
-    # Delete the product from the ERP
-    await delete_data_from_erp(f"/products/{product_id}")
-    return {"id": product_id}
+# Test DELETE /products/{product_id}
+def test_delete_product():
+    # Make a request to the endpoint with product_id=1
+    response = client.delete("/products/1")
+    # Assert that the response status code is 200 OK
+    assert response.status_code == 200
+    # Assert that the response contains an "id" field
+    assert "id" in response.json()
