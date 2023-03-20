@@ -26,8 +26,8 @@ def test_create_product():
             },
             "stock": 12059,    
     }   
-     response = client.post("/products/")
-     id_test = response.json().id
+     response = client.post("/products/",product)
+     id_test = response.json()["id"]
      assert response.status_code == 200
      
      
@@ -64,6 +64,5 @@ def test_update_product():
             "stock": 12059,
             "id": str(id_test)    
     }   
-
 
 
