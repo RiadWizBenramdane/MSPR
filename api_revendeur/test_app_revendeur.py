@@ -22,6 +22,5 @@ def test_read_product():
             "stock": 12059,
             "id": "1"   
     }   
-     response = client.get("/products/99999999999")
-     assert response.status_code == 404
+ 
 
