@@ -1,59 +1,32 @@
+import unittest
 from fastapi.testclient import TestClient
+from main import app
 
-from APPCRM import app
+class TestApp(unittest.TestCase):
+    def setUp(self):
+        self.client = TestClient(app)
 
-client = TestClient(app)
+    def test_protected_endpoint_without_token_should_fail(self):
+        response = self.client.get("/protected")
+        self.assertEqual(response.status_code, 401)
 
-# Test GET customer by ID
-def test_read_customer():
-     response = client.get("/customers/3")
-     assert response.status_code == 200
-     assert response.json() == {
-        "createdAt": "2023-02-20T04:16:24.968Z",
-        "name": "EPSI c'est nul",
-        "username": "pire.ecole",
-        "firstName": "Alex",
-        "lastName": "Benlhaj dehbi",
-        "address": {
-            "postalCode": "EPSI TQT",
-            "city": "LILLE"
-        },
-        "profile": {
-            "firstName": "JEAN",
-            "lastName": "DUJARDIN"
-        },
-        "company": {
-            "companyName": "MSPR"
-        },
-        "id": "3",
-        "email": "email@test.com",
-        "orders": [
-        {
-        "createdAt": "2023-02-20T00:49:24.786Z",
-        "id": "53",
-        "customerId": "3"
-        }
-        ]
-    }
+    def test_protected_endpoint_with_invalid_token_should_fail(self):
+        response = self.client.get("/protected", headers={"Authorization": "Bearer invalid_token"})
+        self.assertEqual(response.status_code, 401)
 
-# # Test GET non-existent customer by ID
-# def test_read_nonexistent_customer():
-#     response = client.get("/customers/99")
-#     assert response.status_code == 404
-#     assert response.json() == {"detail": "Customer not found"}
+    def test_protected_endpoint_with_valid_token_should_succeed(self):
+        access_token = self._get_access_token()
+        response = self.client.get("/protected", headers={"Authorization": f"Bearer {access_token}"})
+        self.assertEqual(response.status_code, 200)
 
+    def test_send_qr_code_endpoint_should_succeed(self):
+        access_token = self._get_access_token()
+        response = self.client.get("/send_qr_code/user1@example.com", headers={"Authorization": f"Bearer {access_token}"})
+        self.assertEqual(response.status_code, 200)
 
-# # Test PUT customer by ID
-# def test_update_customer():
-#     updated_customer = {
-#         "name": "Jhon Doe",
-#     }
-#     response = client.put("/customers/"+str(test_id), json=updated_customer)
-#     assert response.status_code == 200
-#     assert response.json() == {"id": test_id}
+    def _get_access_token(self):
+        response = self.client.post("/auth", json={"username": "admin", "password": "admin"})
+        return response.json()["access_token"]
 
-# # Test DELETE customer by ID
-# def test_delete_customer():
-#     response = client.delete("/customers/1")
-#     assert response.status_code == 200
-#     assert response.json() == {"id": 1}
+if __name__ == '__main__':
+    unittest.main()
