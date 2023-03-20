@@ -12,11 +12,10 @@ def test_delete_product():
 
     # test deleting a non-existent product
     response = client.delete("/products/999")
-    assert response.status_code == 200
+    assert response.status_code == 404
     
     
 def test_create_product():
-     assert response.status_code == 200
      product = {
              "createdAt": "2023-02-19T13:42:19.010Z",
              "name": "Rex Bailey",
